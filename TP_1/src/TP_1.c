@@ -112,13 +112,7 @@ int main(void) {
 	return EXIT_SUCCESS;
 
 }
-/**
- * Esta funcion calcula la diferencia entre los dos precios
- *  @param precioLatam precio de la aerolinea latam
- *  @param precioAerlonieas precio de la aerolineas
- *
- *  @return la diferencia entre los valores.
- */
+
 
 
 
