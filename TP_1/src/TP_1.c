@@ -30,10 +30,9 @@ int main(void) {
 	float diferencia;
 	int opcionDosCompletada = 0;
 	int opcionUnoCompletada = 0;
+	int opcionTresCompletada = 0;
 
-	float calcularDiferencia(float precioLatam, float precioAerolineas);
-
-	opcionElegida = mostrarMenu(kilometrosIngresados, kilometrosIngresados, precioLatam);
+	opcionElegida = mostrarMenu(kilometrosIngresados, precioAerolineas, precioLatam);
 
 	while(opcionElegida != 6){
 		switch(opcionElegida){
@@ -53,7 +52,8 @@ int main(void) {
 				break;
 			case 3:
 				if(opcionDosCompletada == 0 || opcionUnoCompletada == 0){
-					printf("fdsafsaasfd");
+					printf("\n Debes completar los kilometros y los precios primero! \n");
+					opcionElegida =mostrarMenu(kilometrosIngresados, precioAerolineas, precioLatam);
 					break;
 				}
 
@@ -67,20 +67,47 @@ int main(void) {
 				precioPorKmAerolineas= calcularPrecioKilometro(precioAerolineas, kilometrosIngresados);
 				diferencia= calcularDiferencia(precioLatam, precioAerolineas);
 
+				printf("\n Se han calculado todos los costos! \n");
+				opcionTresCompletada= 1;
 				opcionElegida =mostrarMenu(kilometrosIngresados, precioAerolineas, precioLatam);
 				break;
 			case 4:
-				printf("Latam:"
-						"a) Precio con tarjeta de debito: %f \n"
-						"b) Precio con tarjeta de credito: %f \n"
-						"c) Precio con bitcoin: %f \n"
-						"d) Diferencia de precios: %f \n", precioDebitoLatam, precioCreditoLatam, precioBtcLatam, diferencia);
+				if( opcionTresCompletada ==  0){
+					printf("\n Debes calcular los costos primero! \n");
+					opcionElegida =mostrarMenu(kilometrosIngresados, precioAerolineas, precioLatam);
+					break;
+				}
+				mostrarResultados(precioDebitoLatam, precioCreditoLatam, precioBtcLatam, precioPorKmLatam, precioDebitoAerolineas, precioCreditoAerolineas, precioBtcAerolineas, precioPorKmAerolineas, diferencia);
+				opcionElegida =mostrarMenu(kilometrosIngresados, precioAerolineas, precioLatam);
+				break;
+			case 5:
+				kilometrosIngresados= 7090;
+				precioAerolineas= 162965;
+				precioLatam= 159339;
+
+				precioDebitoLatam = calcularDebito(precioLatam);
+				precioDebitoAerolineas = calcularDebito(precioAerolineas);
+				precioCreditoLatam = calcularCredito(precioLatam);
+				precioCreditoAerolineas = calcularCredito(precioAerolineas);
+				precioBtcLatam= calcularBitcoin(precioLatam);
+				precioBtcAerolineas= calcularBitcoin(precioAerolineas);
+				precioPorKmLatam= calcularPrecioKilometro(precioLatam, kilometrosIngresados);
+				precioPorKmAerolineas= calcularPrecioKilometro(precioAerolineas, kilometrosIngresados);
+			    diferencia= calcularDiferencia(precioLatam, precioAerolineas);
+
+				mostrarResultados(precioDebitoLatam, precioCreditoLatam, precioBtcLatam, precioPorKmLatam, precioDebitoAerolineas, precioCreditoAerolineas, precioBtcAerolineas, precioPorKmAerolineas, diferencia);
+
+				opcionElegida =mostrarMenu(kilometrosIngresados, precioAerolineas, precioLatam);
+				break;
 			default:
 				printf("\n Ingrese una opcion valida!! \n");
 				opcionElegida =mostrarMenu(kilometrosIngresados, precioAerolineas, precioLatam);
 			}
 	}
 
+	if(opcionElegida == 6){
+		printf("Saliendo...");
+	}
 
 	return EXIT_SUCCESS;
 
@@ -92,19 +119,7 @@ int main(void) {
  *
  *  @return la diferencia entre los valores.
  */
-float calcularDiferencia(float precioLatam, float precioAerolineas){
-	float diferencia;
 
-	if(precioLatam > precioAerolineas){
-		diferencia= precioLatam - precioAerolineas;
-		return diferencia;
-	}else{
-		diferencia= precioAerolineas - precioLatam;
-		return diferencia;
-	}
-
-	return diferencia;
-}
 
 
 
