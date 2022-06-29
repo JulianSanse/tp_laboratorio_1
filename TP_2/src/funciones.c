@@ -8,54 +8,54 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "utn.h"
+/*
+ * \brief muestra el menu principal y pregunta que opcion elige el usuario
+ * \paran opcionElegida Opcion que elige el usuario
+ */
 void mostrarMenu(int *opcionElegida){
 		setbuf(stdout, NULL);
 
-		printf( "\n1. ALTAS\n"
+		utn_getNumero(opcionElegida,  "\n1. ALTAS\n"
 					"2. MODIFICAR\n"
 					"3. BAJA\n"
 					"4. INFORMAR\n"
 					"5. Carga forzada de datos\n"
-					"6. Salir\n");
-		printf("\n Ingrese una opcion: ");
-		scanf("%d", opcionElegida);
+					"6. Salir\n", "Opcion Incorrecta", 1, 6, 3);
 
 }
-
+/*
+ * \brief muestra el menu caso dos y pregunta que opcion elige el usuario
+ * \paran opcionElegidaCaseDos Opcion que elige el usuario
+ */
 void mostrarMenuCaseDos(int *opcionElegidaCaseDos){
 	setbuf(stdout, NULL);
 
-	printf( "\n1. Modificar Nombre\n"
+	utn_getNumero(opcionElegidaCaseDos, "\n1. Modificar Nombre\n"
 				"2. Modificar Apellido\n"
 				"3. Modificar precio\n"
-				"4. Modificar tipo de pasajero\n"
-				"5. Modificar codigo de vuelo\n"
-				"6. Salir\n");
-	printf("\n Ingrese una opcion: ");
-	scanf("%d", opcionElegidaCaseDos);
+				"4. Modificar codigo de vuelo\n"
+				"5. Modificar tipo de pasajero\n"
+				"6. Salir\n", "\nOpcion incorrecta", 1, 6,3);
 
 }
+/*
+ * \brief muestra el menu informar y pregunta que opcion elige el usuario
+ * \paran opcionElegidaCaseDos Opcion que elige el usuario
+ */
+void mostrarMenuInformar(int *opcionElegidaCaseDos){
+	setbuf(stdout, NULL);
 
-void preguntarChar(char charArray[], char text[]){
-
-	printf("%s", text);
-	scanf("%s", charArray);
-	fflush(stdin);
+	utn_getNumero(opcionElegidaCaseDos, "\n1.Listar pasajeros ordenados alfabeticamente por apellido y tipo"
+			"\n2.Total y promedio de los precios y cuantos pasajeros superan el precio promedio"
+			"\n3.Listar pasajeros por codigo de vuelo y estado de vuelos Activo"
+			"\n4.Salir\n", "\nOpcion incorrecta", 1, 4, 3);
 }
-
-void preguntarFloat(float *price, char text[]){
-	printf("%s", text);
-	scanf("%f", price);
-	fflush(stdin);
-}
-
-void preguntarInteger(int *integer, char text[]){
-	printf("%s", text);
-	scanf("%d", integer);
-	fflush(stdin);
-}
-
+/*
+ * \brief Pregunta la id al usuario y devuelve dicho id
+ * \param mensaje Mensaje que quiere mostrar
+ * \return id
+ */
 int preguntarId(char mensaje[]){
 	int id;
 
@@ -64,21 +64,5 @@ int preguntarId(char mensaje[]){
 
 	return id;
 }
-
-//float promedioVuelos(Passenger* list, int len, float *total){
-//	int contador = 0;
-//	float promedio;
-//
-//	for(int i=0; i<len; i++){
-//		if(list[i].isEmpty != 1){
-//			total = total + list[i].price;
-//			contador++;
-//		}
-//	}
-//
-//	promedio = total/ contador;
-//
-//	return promedio;
-//}
 
 

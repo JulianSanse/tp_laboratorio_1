@@ -1,17 +1,7 @@
-/*
- ============================================================================
- Name        : TP_2.c
- Author      : Julian San Sebastian
- Version     :
- Copyright   : Your copyright notice
- Description : Hello World in C, Ansi-style
- ============================================================================
- */
-//NO OLVIDARSE LA CARGA FORZADA!!!!!
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "utn.h"
 #include "funciones.h"
 #include "ArrayPassenger.h"
 
@@ -20,19 +10,19 @@ int main(void) {
 
 
 	int opcionElegida;
-	int opcionElegidaCaseDos;
+	int opcionElegidaInformar;
 	int elementos = 2000;
 	int id = 0;
-	char name[51];
-	char lastName[51];
-	float price;
-	char flycode[10];
-	int typePassenger;
 	int indexPosicion;
-	int statusFly;
-	float total= 0;
+	int modificado;
+	int eliminado;
+	float totalPrecio = 0;
+	float promedio = 0;
+	int superaPromedioCant = 0;
+	int ingresoPasajero= 0;
 
 	Passenger pasajeros[elementos];
+	Passenger auxPasajero;
 	initPassengers(pasajeros, elementos);
 
 	do{
@@ -40,98 +30,112 @@ int main(void) {
 		switch(opcionElegida){
 			case 1:
 			{
-				id++;
-
-				preguntarChar(name, "\n Ingrese el nombre del pasajero");
-
-				preguntarChar(lastName, "\n Ingrese el apellido del pasajero");
-
-				preguntarFloat(&price, "\n Ingrese el precio del vuelo");
-
-				preguntarChar(flycode, "\n Ingrese el codigo del vuelo");
-
-				preguntarInteger(&typePassenger, "\n Ingrese el tipo de pasajero 1.Para clase turista 2. Para clase ejecutiva 3. Para vip");
-
-				preguntarInteger(&statusFly, "\n Ingrese el estado del vuelo 1. para activo 2. para inactivo");
-
-				addPassanger(pasajeros, elementos, id, name, lastName, price, typePassenger, flycode, statusFly);
-
+				if(utn_getString(auxPasajero.name, NOMBRE_LEN, "\nIntroduzca el nombre del pasajero ", "Nombre incorrecto", 3) == -1 ||
+				   utn_getString(auxPasajero.lastName, NOMBRE_LEN, "\nIntroduzca el apellido del pasajero ", "Apellido incorrecto", 3) == -1 ||
+				   utn_getNumeroFlotante(&auxPasajero.price, "\nIntroduzca el precio del vuelo ", "Precio incorrecto", 0, 9999999999999, 3) == -1 ||
+				   utn_getString(auxPasajero.flycode, 10, "\nIntroduzca el codigo del vuelo ", "Codigo del vuelo incorrecto ", 3) == -1 ||
+				   utn_getNumero(&auxPasajero.typePassenger, "\nIntroduzca el tipo de pasajero \n1.Para clase turista \n2.Para clase ejecutiva \n3.Para vip\n", "Tipo de pasajero incorrecto", 1, 3, 3) == -1 ||
+				   utn_getNumero(&auxPasajero.statusFly, "\nIntroduzca el estado del vuelo \n1.Activo \n2.Inactivo", "Estado del vuelo incorrecto\n", 1, 2, 3) == -1)
+				   {
+					printf("\n Error al agregar pasajero");
+				   }
+				else{
+					auxPasajero.id= id;
+					id++;
+					auxPasajero.isEmpty= 0;
+					addPassanger(pasajeros, elementos, auxPasajero);
+					ingresoPasajero = 1;
+				}
 				break;
 			}
 			case 2:
-				id = preguntarId("Cual es la id que quiere modificar?");
-				indexPosicion= findPassengerById(pasajeros, elementos, id);
+				if(ingresoPasajero == 1){
+					id = preguntarId("\nCual es la id que quiere modificar? ");
+					indexPosicion= findPassengerById(pasajeros, elementos, id);
 
-				if(indexPosicion== -1){
-					printf("\n Id no encontrada!!\n");
-				}else{
-					do{
-						mostrarMenuCaseDos(&opcionElegidaCaseDos);
-
-						switch(opcionElegidaCaseDos){
-							case 1:
-								preguntarChar(pasajeros[indexPosicion].name, "\n Ingrese el nombre del pasajero");
-								break;
-							case 2:
-								preguntarChar(pasajeros[indexPosicion].lastName, "\n Ingrese el nombre del pasajero");
-								break;
-							case 3:
-								preguntarFloat(&pasajeros[indexPosicion].price, "\n Ingrese el precio del vuelo");
-								break;
-							case 4:
-								preguntarChar(pasajeros[indexPosicion].flycode, "\n Ingrese el codigo del vuelo");
-								break;
-							case 5:
-								preguntarInteger(&pasajeros[indexPosicion].typePassenger, "\n Ingrese el tipo de pasajero");
-								break;
-							case 6:
-								break;
-							default:
-								printf("Ingrese una opcion valida");
+					if(indexPosicion== -1){
+						printf("\n Id no encontrada!!\n");
+					}else{
+						modificado = modificarPassenger(pasajeros, elementos, indexPosicion);
+						if(!modificado){
+							printf("\nPasajero modificado correctamente!!!");
+						}else{
+							if(modificado == 1){
+								printf("\nVolviendo al menu...");
+							}else{
+								printf("\nError al modifcar le pasajero!!");
+							}
 						}
-
-					}while(opcionElegidaCaseDos != 6);
+					}
+				}else{
+					printf("\nDebe ingresar un pasajero primero!!");
 				}
 				break;
 			case 3:
 			{
-				printf("%s",pasajeros[0].name);
-				id = preguntarId("Cual es la id del pasajero que quiere eliminar?");
-				indexPosicion= findPassengerById(pasajeros, elementos, id);
+				if(ingresoPasajero == 1){
+					id = preguntarId("\nCual es la id del pasajero que quiere eliminar?");
+					indexPosicion= findPassengerById(pasajeros, elementos, id);
 
-				if (indexPosicion == -1){
-					printf("Esa id no existe");
+					if (indexPosicion == -1){
+						printf("\nEsa id no existe");
+					}else{
+						eliminado = removePassenger(pasajeros, elementos, indexPosicion);
+						if(!eliminado){
+							printf("\nPasajero eliminado correctamente!!");
+						}else{
+							if(eliminado == 1){
+								printf("\nVolviendo al menu...");
+							}else{
+								printf("\nError al eliminar el pasajero");
+							}
+						}
+					}
 				}else{
-//					removePassenger(pasajeros, elementos, indexPosicion);
-
-					printf("pasajero eliminado correctamente");
+					printf("\nDebe ingresar un pasajero primero!!");
 				}
+
 				break;
 			}
 			case 4:
 			{
-				sortPassenger(pasajeros, elementos, 1);
+				if(ingresoPasajero == 1){
+					mostrarMenuInformar(&opcionElegidaInformar);
 
-				printPassenger(pasajeros, elementos);
+					switch(opcionElegidaInformar){
+						case 1:
+							if(!sortPassenger(pasajeros, 2000, 1)){
+								printPassengers(pasajeros, elementos);
+							}
+							break;
+						case 2:
+							calcularPromedio(pasajeros, 2000, &totalPrecio, &promedio);
+							printf("\nEl total de los precios es: %.2f y el promedio es %.2f", totalPrecio, promedio);
+							superaPromedio(pasajeros, 2000, &superaPromedioCant, &promedio);
+							printf("\nSuperan el promedio %d pasajeros", superaPromedioCant);
+							break;
+						case 3:
+							if(!sortPassengersByCode(pasajeros, 2000, 1)){
+								printPassengers(pasajeros, elementos);
+							}
+						case 4:
+							break;
+					}
+				}else{
+					printf("\nDebe ingresar un pasajero primero!");
+				}
 
-//				promedioVuelos(pasajeros, elementos, &total);
-
-				printf("%s", pasajeros[0].name);
 				break;
 			}
 			case 5:
 			{
-				printf("Selecciono la opcion CINCO");
+				cargaForzada(pasajeros, 2000, &id);
+				ingresoPasajero = 1;
 				break;
 			}
 			case 6:
 			{
 				printf("Saliendo....");
-				break;
-			}
-			default:
-			{
-				printf("Opcion incorrecta");
 				break;
 			}
 		}

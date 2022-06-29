@@ -12,12 +12,8 @@
 
 
 void mostrarMenu(int *opcionElegida);
-void preguntarChar(char charArray[], char text[]);
-void preguntarFloat(float *price, char text[]);
-void preguntarInteger(int *integer, char text[]);
 int preguntarId(char mensaje[]);
 void mostrarMenuCaseDos(int *opcionElegidaCaseDos);
-//float promedioVuelos(Passenger* list, int len, float total);
-
+void mostrarMenuInformar(int *opcionElegidaCaseDos);
 
 #endif /* FUNCIONES_H_ */

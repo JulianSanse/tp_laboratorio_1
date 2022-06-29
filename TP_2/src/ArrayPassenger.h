@@ -8,10 +8,12 @@
 #ifndef ARRAYPASSENGER_H_
 #define ARRAYPASSENGER_H_
 
+#define NOMBRE_LEN 51
+
 struct{
 	int id;
-	char name[51];
-	char lastName[51];
+	char name[NOMBRE_LEN];
+	char lastName[NOMBRE_LEN];
 	float price;
 	char flycode[10];
 	int typePassenger;
@@ -21,15 +23,27 @@ struct{
 
 int initPassengers(Passenger* list, int len);
 
-int addPassanger(Passenger* list, int leng, int id, char name[], char lastName[], float price, int typePassenger, char flycode[], int statusFly);
+int addPassanger(Passenger* pArray, int largo, Passenger auxPasajero);
 
 int findPassengerById(Passenger* list, int len,int id);
 
 int sortPassenger(Passenger* list, int leng, int order);
 
-// removePassenger(Passenger* list, int len, int id);
+int modificarPassenger(Passenger* pasajeros, int len, int indexPosicion);
 
-void printPassenger(Passenger* list, int len);
+int removePassenger(Passenger* list, int len, int id);
 
+int printPassengers(Passenger* list, int len);
 
+void printPassenger(Passenger pasajero);
+
+void mostrarMenuInformar(int *opcionElegidaCaseDos);
+
+void calcularPromedio(Passenger* list, int len, float* totalPrecio, float* promedio);
+
+void superaPromedio(Passenger* list, int len, int* superaPromedio, float* promedio);
+
+int sortPassengersByCode(Passenger* list, int len, int order);
+
+void cargaForzada(Passenger* list, int len, int* id);
 #endif /* ARRAYPASSENGER_H_ */
